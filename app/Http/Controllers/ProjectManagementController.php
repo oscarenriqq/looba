@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\GenerateProjectRequest;
+use App\Models\Project;
 use Inertia\Inertia;
 
 use Illuminate\Http\Request;
@@ -26,16 +28,16 @@ class ProjectManagementController extends Controller
         ]);
     }
 
-    public function store(Request $request) 
+    public function store(GenerateProjectRequest $request) 
     {
-        $request->validate([
-            'category' => 'integer|required',
-            'technology' => 'integer|required',
-            'theme' => 'integer|required',
-            'difficulty' => 'integer|required',
-            'comments' => 'max:75|string|required',
-        ]);
+        $project = new Project;
+        $project->category_id = $request->input('category');
+        $project->technology_id = $request->input('technology');
+        $project->theme_id = $request->input('theme');
+        $project->difficulty_id = $request->input('difficulty');
+        $project->comments = $request->input('comments');
 
-        dd($request->all());
+        dd($project->getPrompt());
+        
     }
 }

@@ -1,7 +1,13 @@
 <script setup>
-import { useForm, router } from '@inertiajs/vue3';
-import { comment } from 'postcss';
-import { ref } from 'vue';
+import { useForm, usePage } from '@inertiajs/vue3';
+import { ref, computed } from 'vue';
+import CreateProjectConfirmation from '../../components/CreateProjectConfirmation.vue';
+
+const page = usePage();
+
+const user = computed(() => page.props.auth.user);
+
+console.log(user.value)
 
 const props = defineProps({
     categories: {
@@ -60,6 +66,9 @@ function countCommentCharacters() {
 </script>
 
 <template>
+
+    <CreateProjectConfirmation />
+
     <div class="pt-10 text-light text-center">
         <h1 class="text-4xl font-bold">Diseña tu experiencia de aprendizaje</h1>
         <p class="text-accent mt-2 text-lg">Define tus preferencias y utilizando inteligencia artificial diseñaremos el reto perfecto para tu aprendizaje.</p>
@@ -105,6 +114,7 @@ function countCommentCharacters() {
                         <small>({{ commentsCharactersCount }}/75)</small>
                     </div>
                     <input @input="countCommentCharacters()" v-model="form.comments" maxlength="75" type="text" id="message" rows="4" class="block p-2.5 w-full text-sm text-primary bg-white rounded-lg border border-gray-300" placeholder="Leave a comment..." />
+                    <span class="text-red-500 mt-2" v-if="errors.comments">{{ errors.comments }}</span>
                 </div>
             </div>
             <button type="submit" class="text-light bg-secondary hover:bg-primary focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
